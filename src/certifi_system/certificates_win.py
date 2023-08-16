@@ -2,10 +2,10 @@
 # Released under the MIT license
 # https://github.com/buchio/certifi-system-store-wrapper/blob/main/LICENSE
 
-from .certificate import split_certificates
+from .certificates import split_certificates
 
 
-def get_system_certificate_win() -> list:
+def get_system_certificates_win() -> list:
     import wincertstore
     pems = []
     for store_name in ("CA", "ROOT"):

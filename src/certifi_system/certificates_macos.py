@@ -2,12 +2,12 @@
 # Released under the MIT license
 # https://github.com/buchio/certifi-system-store-wrapper/blob/main/LICENSE
 
-from .certificate import split_certificates
+from .certificates import split_certificates
 
 import subprocess
 
 
-def get_system_certificate_macos() -> list:
+def get_system_certificates_macos() -> list:
     try:
         r1 = subprocess.run(['security', 'export', '-t', 'certs', '-f', 'pemseq', '-k',
                              '/System/Library/Keychains/SystemRootCertificates.keychain'], check=True, stdout=subprocess.PIPE)

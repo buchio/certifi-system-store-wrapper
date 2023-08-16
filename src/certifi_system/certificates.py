@@ -2,6 +2,7 @@
 # Released under the MIT license
 # https://github.com/buchio/certifi-system-store-wrapper/blob/main/LICENSE
 
+import glob
 import os
 import platform
 import certifi
@@ -31,14 +32,14 @@ def get_system_certificates() -> list:
     systemname = platform.system()
     system_certificates = []
     if systemname == 'Linux':
-        from .certificate_linux import get_system_certificate_linux
-        system_certificates = get_system_certificate_linux()
+        from .certificates_linux import get_system_certificates_linux
+        system_certificates = get_system_certificates_linux()
     if systemname == 'Windows':
-        from .certificate_win import get_system_certificate_win
-        system_certificates = get_system_certificate_win()
+        from .certificates_win import get_system_certificates_win
+        system_certificates = get_system_certificates_win()
     if systemname == 'Darwin':
-        from .certificate_macos import get_system_certificate_macos
-        system_certificates = get_system_certificate_macos()
+        from .certificates_macos import get_system_certificates_macos
+        system_certificates = get_system_certificates_macos()
     return system_certificates
 
 
@@ -53,19 +54,21 @@ def get_ssl_certificates() -> list:
 
 
 def get_certificates() -> list:
-    c1 = split_certificates(certifi.contents())
-    c2 = get_system_certificates()
-    c3 = get_ssl_certificates()
-    local_pem_filename = os.path.join(os.path.dirname(__file__), 'local.pem')
-    c4 = []
-    if os.path.exists(local_pem_filename):
-        with open(local_pem_filename) as f:
-            c4 = split_certificates(f.read())
-    # print(f'Certifi: {len(c1)}')
-    # print(f'System:  {len(c2)}')
-    # print(f'SSL:     {len(c3)}')
-    # print(f'Local:   {len(c4)}')
-    # print(f'Total:   {len(c1 + c2 + c3 + c4)}')
-    # print(f'Dedup:   {len(set(c1 + c2 + c3 + c4))}')
+    certs = []
+    certs.append(split_certificates(certifi.contents()))
+    certs.append(get_system_certificates())
+    certs.append(get_ssl_certificates())
+    cer_filenames = glob.glob(
+        f'{os.path.dirname(__file__)}/**/*.cer', recursive=True)
+    cer_filenames += os.environ.get('PYTHON_CERT_FILES', '').split(os.pathsep)
 
-    return list(set(c1 + c2 + c3 + c4))
+    for f in cer_filenames:
+        if os.path.exists(f):
+            with open(f) as f:
+                certs.append(split_certificates(f.read()))
+
+    c = []
+    for cert in certs:
+        c = c + cert
+
+    return list(set(c))

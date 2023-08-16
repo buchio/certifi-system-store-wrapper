@@ -43,7 +43,7 @@ def wrap_functions(certifi) -> None:
     os.close(h)
 
     with open(cert_file, 'w') as f:
-        from .certificate import get_certificates
+        from .certificates import get_certificates
         for cert in get_certificates():
             for l in cert.splitlines():
                 print(l, file=f)
