@@ -1,0 +1,5 @@
+# Copyright (c) 2023 Yukio Obuchi
+# Released under the MIT license
+# https://github.com/buchio/certifi-system-store-wrapper/blob/main/LICENSE
+
+import sys; __import__('certifi_system') and sys.modules['certifi_system'].bootstrap()
