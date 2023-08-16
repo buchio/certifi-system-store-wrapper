@@ -1,0 +1,39 @@
+# Copyright (c) 2023 Yukio Obuchi
+# Released under the MIT license
+# https://github.com/buchio/certifi-system-store-wrapper/blob/main/LICENSE
+
+[build-system]
+requires = [ 'setuptools',  'setuptools_scm', 'wheel', 'wrapt' ]
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'certifi-system'
+authors = [{ name ='Yukio Obuchi', email='buchio@buchio.com' }]
+description = 'Certifi wrapper packege to use system certificates'
+readme = 'README.md'
+requires-python = '>=3.7'
+classifiers = [
+    'Programming Language :: Python :: 3',
+    'License :: OSI Approved :: Apache Software License',
+    'Operating System :: OS Independent',
+]
+
+dependencies = [
+    'certifi', 
+    'wincertstore; sys_platform=="win32"',
+    'wrapt',
+]
+dynamic = ["version"]
+
+[project.scripts]
+certifi-system = 'certifi_system:__main__.main'
+
+[tool.setuptools]
+package-dir = {'' = 'src'}
+include-package-data = true
+
+#[tool.setuptools.dynamic]
+#version = {attr = "certifi_system.version"}
+
+[tool.setuptools_scm]
+write_to = "src/certifi_system/_version.py"

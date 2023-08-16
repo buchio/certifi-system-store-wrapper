@@ -1,0 +1,7 @@
+# Copyright (c) 2023 Yukio Obuchi
+# Released under the MIT license
+# https://github.com/buchio/certifi-system-store-wrapper/blob/main/LICENSE
+
+include src/certifi_system.pth
+include src/certifi_system/local.pem
+
