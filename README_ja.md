@@ -67,3 +67,19 @@ Linux/macOSでは `:` 区切、Windowsでは `;` 区切でファイルを指定�
 - 現在はWindows10、macOS Ventura、Ubuntu20.04でのみ動作確認しています。
   それ以外のプラットフォームではうまく動作しないと思われます。
 
+## 参考
+- https://gitlab.com/alelec/python-certifi-win32
+  - Windows専用のライブラリですが、これと同じものをLinux/macOSでも使いたい
+    というのが今回の開発動機でした。もはやメンテナンスが止まっており、下記の
+    pip-system-certsに引き継がれていますが、Windowsの認証局情報取得の方法など
+    実装面で非常に参考になりました。
+
+- https://gitlab.com/alelec/pip-system-certs
+  - 上記のpython-certifi-win32の後継ですが、pip専用っぽくなっていたり、
+    システムからではなくsslの認証曲情報を取得するようになっていたりしています。
+
+- https://github.com/tiran/certifi-system-store
+  - こちらもこのライブラリと同じ動機で開発されたものですが、Linux/FreeBSD
+    専用だったので今回の用途では少し使いにくいものでした。
+    各ディストリビューションでの認証局の保存場所についてまとめて下さっているのは
+    非常に有り難かったです。
