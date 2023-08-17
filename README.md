@@ -5,7 +5,7 @@ A certifi hack to use system trust store and use's own CA.
 
 The [certifi](https://pypi.org/project/certifi/) library is often used
 in Python to obtain certificate authority information for SSL/TSL
-communication, but this library only provides a Mozzillla-approved
+communication, but this library only provides a Mozilla-approved
 Root certificate authority and does not provide any further
 functionality. There is also no official way to add your own
 certificate authority.
