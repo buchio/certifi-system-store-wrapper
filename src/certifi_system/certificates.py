@@ -2,6 +2,8 @@
 # Released under the MIT license
 # https://github.com/buchio/certifi-system-store-wrapper/blob/main/LICENSE
 
+from .logger import logger
+
 import glob
 import os
 import platform
@@ -40,6 +42,7 @@ def get_system_certificates() -> list:
     if systemname == 'Darwin':
         from .certificates_macos import get_system_certificates_macos
         system_certificates = get_system_certificates_macos()
+    logger.info(f'Got {len(system_certificates)} CAs from system.')
     return system_certificates
 
 
@@ -48,27 +51,37 @@ def get_ssl_certificates() -> list:
         import ssl
         ssl_context = ssl.create_default_context()
         ssl_context.load_default_certs()
-        return [ssl.DER_cert_to_PEM_cert(der_cert).strip() for der_cert in ssl_context.get_ca_certs(binary_form=True)]
+        certs = [ssl.DER_cert_to_PEM_cert(der_cert).strip(
+        ) for der_cert in ssl_context.get_ca_certs(binary_form=True)]
+        logger.info(f'Got {len(certs)} CAs from SSL.')
+        return certs
     except:
         return []
 
 
 def get_certificates() -> list:
     certs = []
-    certs.append(split_certificates(certifi.contents()))
+    certifi_certs = split_certificates(certifi.contents())
+    logger.info(f'Got {len(certifi_certs)} CAs from original certifi.')
+    certs.append(certifi_certs)
     certs.append(get_system_certificates())
     certs.append(get_ssl_certificates())
     cer_filenames = glob.glob(
         f'{os.path.dirname(__file__)}/**/*.cer', recursive=True)
-    cer_filenames += os.environ.get('PYTHON_CERT_FILES', '').split(os.pathsep)
+    cer_filenames += os.environ.get('PYTHON_CERTIFI_CERT_FILES',
+                                    '').split(os.pathsep)
 
-    for f in cer_filenames:
-        if os.path.exists(f):
-            with open(f) as f:
-                certs.append(split_certificates(f.read()))
+    for fn in cer_filenames:
+        if os.path.exists(fn):
+            with open(fn) as f:
+                local_certs = split_certificates(f.read())
+                logger.info(f'Got {len(local_certs)} CAs from {fn}.')
+                certs.append(local_certs)
 
     c = []
     for cert in certs:
         c = c + cert
-
-    return list(set(c))
+    logger.info(f'Total num of CAs: {len(c)}.')
+    r = list(set(c))
+    logger.info(f'Total num of de-duplicated CAs: {len(r)}.')
+    return r

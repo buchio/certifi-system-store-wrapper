@@ -35,14 +35,14 @@ requestsに依存している多くのライブラリがcertifiを用いて認�
 
 ## ユーザー独自の認証局の追加方法
 
-### 環境変数 `PYTHON_CERT_FILES` を設定する
+### 環境変数 `PYTHON_CERTIFI_CERT_FILES` を設定する
 
 Linux/macOSでは `:` 区切、Windowsでは `;` 区切でファイルを指定します。
 
     Windows
-    > SET PYTHON_CERT_FILES=C:\CA\My_Root_CA.cer;C:\CA2\My_Root_CA2.cer
+    > SET PYTHON_CERTIFI_CERT_FILES=C:\CA\My_Root_CA.cer;C:\CA2\My_Root_CA2.cer
     Linux/macOS
-    $ export PYTHON_CERT_FILES=~/My_Root_CA.cer:~/My_Root_CA2.cer
+    $ export PYTHON_CERTIFI_CERT_FILES=~/My_Root_CA.cer:~/My_Root_CA2.cer
 
 
 フルパスで指定した方が良いです。
@@ -56,6 +56,22 @@ Linux/macOSでは `:` 区切、Windowsでは `;` 区切でファイルを指定�
     Linux/macOS
     $ copy My_Root_CA.cer ~/.venv/lib/python3.11/site-packages/certifi_system/
 
+
+## ログ出力
+
+環境変数でログ出力を制御することができます。
+
+- `PYTHON_CERTIFI_LOG_LEVEL`
+  `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`のいずれかを設定します。
+  デフォルトは `WARNING`です。
+
+- `PYTHON_CERTIFI_LOG_FILE`
+  ログファイルを記録するファイル名を指定します。
+  デフォルトは空で、ファイル出力はしません。
+
+- `PYTHON_CERTIFI_LOG_FILE_LEVEL`
+  `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`のいずれかを設定します。
+  デフォルトは `DEBUG`です。
 
 # 制約
 

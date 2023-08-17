@@ -38,14 +38,14 @@ install it using the following method.
 
 ## How to add a user's own Certificate Authority
 
-### Set the environment variable `PYTHON_CERT_FILES`.
+### Set the environment variable `PYTHON_CERTIFI_CERT_FILES`.
 
 Specify files with `:` separators on Linux/macOS and `;` separators on Windows.
 
     Windows
-    > SET PYTHON_CERT_FILES=C:\CA\My_Root_CA.cer;C:\CA2\My_Root_CA2.cer
+    > SET PYTHON_CERTIFI_CERT_FILES=C:\CA\My_Root_CA.cer;C:\CA2\My_Root_CA2.cer
     Linux/macOS
-    $ export PYTHON_CERT_FILES=~/My_Root_CA.cer:~/My_Root_CA2.cer
+    $ export PYTHON_CERTIFI_CERT_FILES=~/My_Root_CA.cer:~/My_Root_CA2.cer
 
 
 It is better to specify the full path.
@@ -59,6 +59,22 @@ The extension is fixed to `cer`. Multiple files are supported.
     Linux/macOS
     $ copy My_Root_CA.cer ~/.venv/lib/python3.11/site-packages/certifi_system/
 
+
+## Log output
+
+Log output can be controlled by environment variables.
+
+- `PYTHON_CERTIFI_LOG_LEVEL`.
+  Set to one of `DEBUG`, `INFO`, `WARNING`, `ERROR`, or `CRITICAL`.
+  Default is `WARNING`.
+
+- `PYTHON_CERTIFI_LOG_FILE`.
+  Specifies the name of the file to log to.
+  Defaults to empty, no file output.
+
+- `PYTHON_CERTIFI_LOG_FILE_LEVEL`.
+  Set to one of `DEBUG`, `INFO`, `WARNING`, `ERROR`, or `CRITICAL`.
+  Default is `DEBUG`.
 
 # Restrictions
 

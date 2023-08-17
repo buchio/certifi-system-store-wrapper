@@ -2,6 +2,7 @@
 # Released under the MIT license
 # https://github.com/buchio/certifi-system-store-wrapper/blob/main/LICENSE
 
+from .logger import logger
 from .wrapper import wrap_functions
 import os
 import site
@@ -11,19 +12,26 @@ _registered = False
 
 
 def _register_bootstrap_functions():
+    logger.debug('Try to register wrap functions.')
+
     global _registered
     if _registered:
+        logger.debug('Already registerd.')
         return
     _registered = True
 
+    logger.debug('Register wrapt hook.')
+
     @wrapt.when_imported('certifi')
     def apply_certifi_patches(certifi):
-        # TODO: create certificate file here.
         wrap_functions(certifi)
 
 
 def _execsitecustomize_wrapper(wrapped):
+    logger.debug('_execsitecustomize_wrapper')
+
     def _execsitecustomize(*args, **kwargs):
+        logger.debug('_execsitecustomize')
         try:
             return wrapped(*args, **kwargs)
         finally:
@@ -36,7 +44,10 @@ def _execsitecustomize_wrapper(wrapped):
 
 
 def _execusercustomize_wrapper(wrapped):
+    logger.debug('_execusercustomize_wrapper')
+
     def _execusercustomize(*args, **kwargs):
+        logger.debug('_execusercustomize_wrapper')
         try:
             return wrapped(*args, **kwargs)
         finally:
