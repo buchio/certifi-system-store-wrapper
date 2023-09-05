@@ -21,16 +21,6 @@ requestsに依存している多くのライブラリがcertifiを用いて認�
 
 インストールするだけで利用することができます。
 
-現在このライブラリはまだPyPIに登録していませんので、以下の方法でインス
-トールする必要があります。
-
-
-    pip install -U git+https://github.com/buchio/certifi-system-store-wrapper.git
-
-
-将来PyPIに登録したら、以下の方法でインストールできるようになるはずです。
-
-
     pip install -U certifi-system-store-wrapper
 
 ## ユーザー独自の認証局の追加方法
@@ -56,6 +46,25 @@ Linux/macOSでは `:` 区切、Windowsでは `;` 区切でファイルを指定�
     Linux/macOS
     $ copy My_Root_CA.cer ~/.venv/lib/python3.11/site-packages/certifi_system/
 
+
+## ビルド
+
+以下のコマンドでwhlファイルを作成できます。
+
+    pip wheel -w whl --no-deps .
+
+
+## 他のインストール方法
+
+### 最新の開発版をインストールする
+
+    pip install -U git+https://github.com/buchio/certifi-system-store-wrapper.
+    
+### 開発中のディレクトリから直接インストールする
+
+    git clone https://github.com/buchio/certifi-system-store-wrapper
+    cd certifi-system-store-wrapper
+    pip install -U .
 
 ## ログ出力
 

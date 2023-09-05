@@ -5,7 +5,7 @@
 import logging
 import os
 
-logger = logging.getLogger('certifi_system')
+logger = logging.getLogger('certifi_system_store_wrapper')
 
 _f = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 

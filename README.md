@@ -26,15 +26,7 @@ that such a library will be rendered useless as soon as possible.
 
 You can use this library simply by installing it.
 
-Currently, this library is not yet registered with PyPI, so it must be
-installed in the following way
-
-    pip install -U git+https://github.com/buchio/certifi-system-store-wrapper.git
-
-In the future, once it is registered with PyPI, you should be able to
-install it using the following method.
-
-    pip install -U certifi-system-store-wrapper
+    pip install certifi-system-store-wrapper
 
 ## How to add a user's own Certificate Authority
 
@@ -59,6 +51,25 @@ The extension is fixed to `cer`. Multiple files are supported.
     Linux/macOS
     $ copy My_Root_CA.cer ~/.venv/lib/python3.11/site-packages/certifi_system/
 
+
+## Build
+
+To build it, exec followings.
+
+    pip wheel -w whl --no-deps .
+
+
+## Other install method.
+
+### Install from newest source.
+
+    pip install -U git+https://github.com/buchio/certifi-system-store-wrapper.git
+
+### Install from current development directory.
+
+    git clone https://github.com/buchio/certifi-system-store-wrapper
+    cd certifi-system-store-wrapper
+    pip install -U .
 
 ## Log output
 

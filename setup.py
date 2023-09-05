@@ -11,18 +11,20 @@ from setuptools.command.install import install
 from setuptools.command.develop import develop
 from setuptools.command.build_py import build_py
 
+pthfilename = 'certifi_system_store_wrapper.pth'
 
 def check_pth(site_packages):
-    pthfile = os.path.join(site_packages, 'certifi_system.pth')
+    global pthfilename
+    pthfile = os.path.join(site_packages, pthfilename)
     if not os.path.exists(pthfile):
         sys.stderr.write(
-            'WARNING: certifi_system.pth not installed correctly, will try to correct.\n')
+            f'WARNING: {pthfilename} not installed correctly, will try to correct.\n')
         sys.stderr.write(
-            'Please report an issue at https://gitlab.com/alelec/pip-system-certs with your\n')
+            'Please report an issue at https://gitlab.com/buchio/certifi-system-store-wrapper with your\n')
         sys.stderr.write(
             'python and pip versions included in the description\n')
         import shutil
-        shutil.copyfile('certifi_system.pth', pthfile)
+        shutil.copyfile(pthfilename, pthfile)
 
 
 class InstallCheck(install):
@@ -42,9 +44,9 @@ class BuildIncludePth(build_py):
 
     def run(self):
         super().run()
-        pth_file_name = 'certifi_system.pth'
-        srcfile = os.path.join('src', pth_file_name)
-        outfile = os.path.join(self.build_lib, pth_file_name)
+        global pthfilename
+        srcfile = os.path.join('src', pthfilename)
+        outfile = os.path.join(self.build_lib, pthfilename)
         self.copy_file(srcfile, outfile, preserve_mode=0)
 
 
