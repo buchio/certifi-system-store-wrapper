@@ -1,5 +1,5 @@
 # certifi-system-store-wrapper
-A certifi hack to use system trust store and use's own CA.
+A wrapper for certifi to use the system trust store and user's own CA.
 
 ## Motivation
 
@@ -92,9 +92,8 @@ Log output can be controlled by environment variables.
 - I have not checked, but I don't think it will work if it is
   binaryized with PyInstaller or other software. There is a
   workaround, which will be described after confirmation.
-- We have confirmed that it works only with Python 3.8 or later; it
-  definitely does not work with Python 2, and we do not plan to
-  support it. It probably will not work with Python 3.6 or earlier.
+- Requires Python 3.7 or later, but we have confirmed that it works only with Python 3.8 or later.
+  It definitely does not work with Python 2, and we do not plan to support it.
 - Currently only tested on Windows 10, macOS Ventura, and Ubuntu
   20.04. It is not expected to work well on other platforms.
 

@@ -1,3 +1,6 @@
+# certifi-system-store-wrapper
+certifiをハックして、システムの信頼ストアとユーザー独自のCAを使用するためのラッパーです。
+
 # 動機
 
 PythonにおいてSSL/TSL通信を行う際に、認証局情報を取得するためによく使
@@ -21,7 +24,7 @@ requestsに依存している多くのライブラリがcertifiを用いて認�
 
 インストールするだけで利用することができます。
 
-    pip install -U certifi-system-store-wrapper
+    pip install certifi-system-store-wrapper
 
 ## ユーザー独自の認証局の追加方法
 
@@ -44,29 +47,29 @@ Linux/macOSでは `:` 区切、Windowsでは `;` 区切でファイルを指定�
     Windows
     > copy My_Root_CA.cer C:\Python311\lib\site-packages\certifi_system\
     Linux/macOS
-    $ copy My_Root_CA.cer ~/.venv/lib/python3.11/site-packages/certifi_system/
+    $ copy My_Root_CA.cer ~/.venv/lib/python3.11/site-packages/certifi_system\
 
 
-## ビルド
+# ビルド
 
-以下のコマンドでwhlファイルを作成できます。
+ビルドするには、以下のコマンドを実行します。
 
     pip wheel -w whl --no-deps .
 
 
-## 他のインストール方法
+# 他のインストール方法
 
-### 最新の開発版をインストールする
+### 最新のソースからインストールする
 
-    pip install -U git+https://github.com/buchio/certifi-system-store-wrapper.
-    
-### 開発中のディレクトリから直接インストールする
+    pip install -U git+https://github.com/buchio/certifi-system-store-wrapper.git
+
+### 現在の開発ディレクトリからインストールする
 
     git clone https://github.com/buchio/certifi-system-store-wrapper
     cd certifi-system-store-wrapper
     pip install -U .
 
-## ログ出力
+# ログ出力
 
 環境変数でログ出力を制御することができます。
 
@@ -86,25 +89,17 @@ Linux/macOSでは `:` 区切、Windowsでは `;` 区切でファイルを指定�
 
 - 確認していませんが、PyInstallerなどでバイナリ化した場合には動作しな
   いと思います。回避策もありますので、確認後記述します。
-- Python3.8以降でのみ動作確認しています。Python2では間違いなく動きませ
-  んし、サポートの予定もありません。おそらくPython3.6より前では動かな
-  いと思います。
-- 現在はWindows10、macOS Ventura、Ubuntu20.04でのみ動作確認しています。
+- Python 3.7以降が必要ですが、動作確認はPython 3.8以降でのみ行っています。
+  Python 2では間違いなく動作しませんし、サポートの予定もありません。
+- 現在はWindows 10、macOS Ventura、Ubuntu 20.04でのみ動作確認しています。
   それ以外のプラットフォームではうまく動作しないと思われます。
 
-## 参考
+# 参考
 - https://gitlab.com/alelec/python-certifi-win32
-  - Windows専用のライブラリですが、これと同じものをLinux/macOSでも使いたい
-    というのが今回の開発動機でした。もはやメンテナンスが止まっており、下記の
-    pip-system-certsに引き継がれていますが、Windowsの認証局情報取得の方法など
-    実装面で非常に参考になりました。
+  - これはWindows専用のライブラリで、certifiをフックしてシステムにインストールされている認証局のリストを返すように変更するものです。もはやメンテナンスされていないようですが、Windowsの認証局情報を取得するコードは特に参考になりました。
 
 - https://gitlab.com/alelec/pip-system-certs
-  - 上記のpython-certifi-win32の後継ですが、pip専用っぽくなっていたり、
-    システムからではなくsslの認証局情報を取得するようになっていたりしています。
+  - python-certifi-win32の後継ですが、requestsライブラリを拡張してsslライブラリの認証局情報を使用するようになっています。しかし、requestsに限定されているため、少し使いにくくなっています。
 
 - https://github.com/tiran/certifi-system-store
-  - こちらもこのライブラリと同じ動機で開発されたものですが、Linux/FreeBSD
-    専用だったので今回の用途では少し使いにくいものでした。
-    各ディストリビューションでの認証局の保存場所についてまとめて下さっているのは
-    非常に有り難かったです。
+  - このライブラリとほぼ同じ目的で設計されていますが、残念ながらLinux/FreeBSD専用です。各Linuxディストリビューションの認証局の場所に関する情報は非常に参考になります。
