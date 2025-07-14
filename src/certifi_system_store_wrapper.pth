@@ -1,5 +1,7 @@
-# Copyright (c) 2023 Yukio Obuchi
+# Copyright (c) 2025 Yukio Obuchi
 # Released under the MIT license
 # https://github.com/buchio/certifi-system-store-wrapper/blob/main/LICENSE
 
-import sys; __import__('certifi_system_store_wrapper') and sys.modules['certifi_system_store_wrapper'].bootstrap()
+# This .pth file ensures that the certifi_system_store_wrapper package is imported
+# and its bootstrap function is executed automatically when the Python interpreter starts.
+import sys; __import__('certifi_system_store_wrapper')

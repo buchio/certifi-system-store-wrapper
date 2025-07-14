@@ -1,6 +1,9 @@
-# Copyright (c) 2023 Yukio Obuchi
+# Copyright (c) 2025 Yukio Obuchi
 # Released under the MIT license
 # https://github.com/buchio/certifi-system-store-wrapper/blob/main/LICENSE
+
+# This pyproject.toml file defines the build system and project metadata for the certifi-system-store-wrapper package.
+# It specifies build dependencies, project information, scripts, and versioning configuration.
 
 [build-system]
 requires = [ 'setuptools',  'setuptools_scm', 'wheel', 'wrapt' ]
@@ -9,7 +12,7 @@ build-backend = 'setuptools.build_meta'
 [project]
 name = 'certifi-system-store-wrapper'
 authors = [{ name ='Yukio Obuchi', email='Yukio.Oobuchi@sony.com' }]
-description = 'Certifi wrapper packege to use system certificates'
+description = 'Certifi wrapper package to use system certificates'
 readme = 'README.md'
 requires-python = '>=3.7'
 classifiers = [

@@ -101,7 +101,7 @@ Linux/macOSでは `:` 区切、Windowsでは `;` 区切でファイルを指定�
 
 - https://gitlab.com/alelec/pip-system-certs
   - 上記のpython-certifi-win32の後継ですが、pip専用っぽくなっていたり、
-    システムからではなくsslの認証曲情報を取得するようになっていたりしています。
+    システムからではなくsslの認証局情報を取得するようになっていたりしています。
 
 - https://github.com/tiran/certifi-system-store
   - こちらもこのライブラリと同じ動機で開発されたものですが、Linux/FreeBSD
