@@ -28,9 +28,9 @@ You can use this library simply by installing it.
 
     pip install certifi-system-store-wrapper
 
-## How to add a user's own Certificate Authority
+### How to add a user's own Certificate Authority
 
-### Set the environment variable `PYTHON_CERTIFI_CERT_FILES`.
+#### Set the environment variable `PYTHON_CERTIFI_CERT_FILES`.
 
 Specify files with `:` separators on Linux/macOS and `;` separators on Windows.
 
@@ -42,7 +42,7 @@ Specify files with `:` separators on Linux/macOS and `;` separators on Windows.
 
 It is better to specify the full path.
 
-### Copy the file directly into the package.
+#### Copy the file directly into the package.
 
 The extension is fixed to `cer`. Multiple files are supported.
 
@@ -87,7 +87,49 @@ Log output can be controlled by environment variables.
   Set to one of `DEBUG`, `INFO`, `WARNING`, `ERROR`, or `CRITICAL`.
   Default is `DEBUG`.
 
-# Restrictions
+## Architecture
+
+This library hooks into Python's startup process and dynamically wraps the `certifi` functions when `certifi` is imported, enabling the use of the system's certificate store and user-specified certificates.
+
+### Startup Sequence
+
+1.  **Initialization via `.pth` file**:
+    When Python starts, it reads the `.pth` file in the `site-packages` directory. This project places a file named `certifi_system_store_wrapper.pth`, which imports the `certifi_system_store_wrapper` module.
+
+2.  **Bootstrap Process**:
+    When the `certifi_system_store_wrapper` module is imported, `__init__.py` calls `bootstrap.bootstrap()`.
+    `bootstrap.py` wraps the `execsitecustomize` and `execusercustomize` functions of Python's `site` module. This allows registering a hook to wrap `certifi` at the appropriate time in Python's initialization process.
+
+3.  **`certifi` Import Hook**:
+    Using the `wrapt.when_imported('certifi')` decorator, the `apply_certifi_patches` function is set to be called when the `certifi` module is imported.
+
+### Certificate Collection and Replacement
+
+1.  **Wrapping `certifi` Functions**:
+    The `apply_certifi_patches` function calls `wrapper.wrap_functions`.
+    `wrap_functions` replaces the `certifi.where()` and `certifi.contents()` functions with its own functions using `wrapt`.
+
+2.  **Certificate Collection**:
+    `wrapper.py` calls `certificates.get_certificates()` to collect certificates from the following sources:
+    -   **certifi**: Gets the original certificates from `certifi.contents()`.
+    -   **System Store**:
+        -   **Windows**: Uses the `wincertstore` library to get certificates from the Windows certificate store.
+        -   **macOS**: Exports certificates from the keychain using the `security` command.
+        -   **Linux**: Reads certificate files from common paths (e.g., `/etc/ssl/certs/ca-certificates.crt`).
+    -   **SSL Module**: Gets certificates using Python's `ssl.create_default_context()`.
+    -   **User-specified**: Reads files specified by the `PYTHON_CERTIFI_CERT_FILES` environment variable and `.cer` files in the package directory.
+
+3.  **Temporary File Creation and Replacement**:
+    -   Deduplicates all collected certificates and writes them to a temporary file.
+    -   The wrapped `certifi.where()` will now return the path to this temporary file.
+    -   The wrapped `certifi.contents()` will now return the content of this temporary file.
+
+4.  **Cleanup**:
+    Registers `atexit` and signal handlers (`SIGTERM`, `SIGINT`) to ensure the created temporary file is deleted upon Python process termination.
+
+This architecture allows existing code that uses `certifi` to utilize the system's certificate store and user's own certificates without any modifications.
+
+## Restrictions
 
 - I have not checked, but I don't think it will work if it is
   binaryized with PyInstaller or other software. There is a
@@ -116,12 +158,3 @@ Log output can be controlled by environment variables.
     unfortunately it is for Linux/FreeBSD only. The information about
     the location of the certificate authority for each Linux
     distribution is very helpful.
-  
-  
-
-
-
-
-
-
-
