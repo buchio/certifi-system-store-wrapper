@@ -129,12 +129,11 @@ Linux/macOSでは `:` 区切、Windowsでは `;` 区切でファイルを指定�
 
 ## 制約
 
-- 確認していませんが、PyInstallerなどでバイナリ化した場合には動作しな
-  いと思います。回避策もありますので、確認後記述します。
 - Python 3.7以降が必要ですが、動作確認はPython 3.8以降でのみ行っています。
   Python 2では間違いなく動作しませんし、サポートの予定もありません。
 - 現在はWindows 10、macOS Ventura、Ubuntu 20.04でのみ動作確認しています。
   それ以外のプラットフォームではうまく動作しないと思われます。
+- PyInstallerなどでバイナリ化した場合には動作しないと思います。
 
 ## 参考
 - https://gitlab.com/alelec/python-certifi-win32

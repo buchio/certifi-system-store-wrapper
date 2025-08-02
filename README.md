@@ -131,13 +131,11 @@ This architecture allows existing code that uses `certifi` to utilize the system
 
 ## Restrictions
 
-- I have not checked, but I don't think it will work if it is
-  binaryized with PyInstaller or other software. There is a
-  workaround, which will be described after confirmation.
 - Requires Python 3.7 or later, but we have confirmed that it works only with Python 3.8 or later.
   It definitely does not work with Python 2, and we do not plan to support it.
 - Currently only tested on Windows 10, macOS Ventura, and Ubuntu
   20.04. It is not expected to work well on other platforms.
+- I don't think it will work if it is binaryized with PyInstaller or other software.
 
 ## References
 - https://gitlab.com/alelec/python-certifi-win32
